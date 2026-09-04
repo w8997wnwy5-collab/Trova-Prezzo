@@ -66,6 +66,14 @@ html[data-theme="dark"] .search-row,:root:not([data-theme]) .search-row{backgrou
   border-radius:999px;padding:6px 12px;font-size:12.5px;cursor:pointer;white-space:nowrap}
 .chip:active{transform:scale(.95)}
 
+.segmented{display:flex;gap:4px;margin-top:10px;padding:3px;border:1px solid var(--stroke);
+  border-radius:12px;background:var(--card-solid)}
+html[data-theme="dark"] .segmented,:root:not([data-theme]) .segmented{background:rgba(0,0,0,.25)}
+.segmented button{flex:1;border:0;background:none;color:var(--tx-dim);border-radius:9px;
+  padding:8px 6px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.segmented button.on{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;
+  box-shadow:0 4px 12px rgba(124,108,255,.35)}
+
 .adv{margin-top:10px}
 .adv summary{cursor:pointer;font-size:13px;color:var(--tx-dim);list-style:none;user-select:none}
 .adv summary::-webkit-details-marker{display:none}
@@ -84,9 +92,11 @@ html[data-theme="dark"] .search-row,:root:not([data-theme]) .search-row{backgrou
 .switch input:checked + span{background:var(--acc)}
 .switch input:checked + span::after{transform:translateX(16px)}
 .field{display:flex;flex-direction:column;gap:5px;font-size:13.5px;color:var(--tx-dim);max-width:220px}
-.field input{background:var(--card-solid);border:1px solid var(--stroke);border-radius:10px;
+.field input,.field select{background:var(--card-solid);border:1px solid var(--stroke);border-radius:10px;
   padding:9px 11px;color:var(--tx);font-size:15px;outline:none}
-html[data-theme="dark"] .field input,:root:not([data-theme]) .field input{background:rgba(0,0,0,.25)}
+html[data-theme="dark"] .field input,html[data-theme="dark"] .field select,
+:root:not([data-theme]) .field input,:root:not([data-theme]) .field select{background:rgba(0,0,0,.25)}
+#fxNote{font-size:11.5px;margin-top:2px}
 
 /* introduzione (prima ricerca) */
 .intro-list{display:grid;gap:11px;margin:12px 0 0;padding:0;list-style:none}
@@ -140,7 +150,8 @@ html[data-theme="dark"] .field input,:root:not([data-theme]) .field input{backgr
 .trust.t-lo{color:var(--hot);background:rgba(255,77,109,.13);border-color:rgba(255,77,109,.3)}
 .price{text-align:right;flex:none}
 .price b{display:block;font-size:19px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
-.price small{display:block;font-size:11px;color:var(--tx-mute);margin-top:2px}
+.price small{display:block;font-size:11px;color:var(--tx-mute);margin-top:2px;white-space:nowrap}
+.price small.savings{color:var(--ok);font-weight:700}
 .badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:750;margin-top:9px}
 .b-error{color:#fff;background:linear-gradient(135deg,#ff2d55,#ff7a45)}
 .b-deal{color:#fff;background:linear-gradient(135deg,#7c6cff,#c05cff)}

@@ -1,7 +1,9 @@
 # 🏷️ Trova Prezzo
 
-Web app (PWA) che cerca un prodotto sui negozi online, **confronta i prezzi**, valuta
-**quanto è affidabile chi vende** e mette in evidenza **possibili errori di prezzo e offerte imperdibili**.
+Web app (PWA) per chi compra **in Svizzera**: cerca un prodotto sui negozi online, **confronta i prezzi
+in franchi**, valuta **quanto è affidabile chi vende** e mette in evidenza **possibili errori di prezzo e
+offerte imperdibili**. Le offerte italiane ed estere vengono convertite al cambio del giorno e, a scelta,
+maggiorate della **stima dell'IVA all'importazione (8.1%)**, così il confronto con i negozi svizzeri è onesto.
 
 Funziona interamente nel browser: nessun server, nessuna API key, nessun dato che esce dal telefono.
 Pensata per essere installata sulla schermata Home dell'iPhone.
@@ -14,15 +16,18 @@ Pensata per essere installata sulla schermata Home dell'iPhone.
 
 | | |
 |---|---|
-| 🔎 **Ricerca multi-negozio** | Interroga in parallelo Trovaprezzi, idealo, eBay Italia, Google Shopping e Amazon.it |
-| 🛡️ **Punteggio di affidabilità** | Ogni venditore ha un punteggio 0-100 (catalogo di negozi italiani noti + euristiche su dominio e TLD) |
-| 🏆 **Miglior scelta** | Non il prezzo più basso e basta: il miglior compromesso tra prezzo (55%) e affidabilità (45%) |
+| 🇨🇭 **Negozi svizzeri** | Toppreise, Google Shopping CH, digitec, Galaxus, Brack e — opzionali — microspot, Interdiscount, Ricardo |
+| 🇮🇹 **Italia ed estero** | Trovaprezzi, idealo, Google Shopping IT, eBay Italia, Amazon.it e Amazon.de: si attivano con il selettore *Tutto* o *Italia · estero* |
+| 💱 **Confronto in franchi** | Cambio EUR/CHF dalla BCE (via `frankfurter.app`), tenuto in cache 24 ore, con valore di riserva se la rete non risponde |
+| 🛃 **Costi di import** | Stima dell'IVA svizzera dell'8.1% sugli acquisti esteri, con la franchigia sotto i ~5 CHF di imposta; disattivabile |
+| 🛡️ **Punteggio di affidabilità** | 0-100 per venditore: catalogo di negozi svizzeri e italiani più euristiche su dominio e TLD (un `.ch` sconosciuto parte più in alto di un `.xyz`) |
+| 🏆 **Miglior scelta** | Non il prezzo più basso e basta: il miglior compromesso tra prezzo (55%) e affidabilità (45%), calcolato sui prezzi già convertiti |
 | 🎯 **Errori di prezzo** | Prezzo ≤ 40% della mediana di mercato **da un venditore affidabile** → probabile errore di listino |
-| 🔥 **Offerte imperdibili** | Prezzo tra il 40% e il 65% della mediana |
-| ⚠️ **Anti-abbaglio** | Prezzo bassissimo da venditore poco noto → segnalato come *anomalo, da verificare*, non come affare |
-| 🧹 **Filtro rumore** | Accessori, custodie e ricambi (prezzo < 12% della mediana o titolo poco pertinente) finiscono tra gli esclusi |
-| 🔔 **Avvisi prezzo** | Salvi una ricerca con un prezzo obiettivo: quando la ripeti ti avvisa se qualcuno è sceso sotto |
-| 📱 **PWA offline** | Il guscio dell'app è in cache: si apre anche senza rete (i prezzi ovviamente no) |
+| 🔥 **Offerte imperdibili** | Prezzo tra il 40% e il 65% della mediana, da venditore con reputazione sufficiente |
+| ⚠️ **Anti-abbaglio** | Sconto forte da negozio poco noto → segnalato come *da verificare*, mai come affare |
+| 🧹 **Filtro rumore** | Accessori e ricambi (prezzo < 12% della mediana o titolo poco pertinente) finiscono tra gli esclusi |
+| 🔔 **Avvisi prezzo** | Ricerca salvata con un prezzo obiettivo: quando la ripeti ti avvisa se qualcuno è sceso sotto |
+| 📱 **PWA offline** | Il guscio dell'app resta in cache: si apre anche senza rete (i prezzi ovviamente no) |
 
 ## Come funziona
 
@@ -31,12 +36,16 @@ Pensata per essere installata sulla schermata Home dell'iPhone.
    sequenza finché uno risponde; il proxy che ha funzionato viene ricordato e riprovato per primo.
 2. **Estrazione** — invece di dipendere dalle classi CSS di ogni sito (che cambiano di continuo), il
    parser parte dai **testi che contengono un prezzo** e risale nel DOM fino al contenitore che ha un
-   link e un titolo. Sugli aggregatori cerca in più il nome del negozio. Se il proxy restituisce
-   testo/markdown invece di HTML, usa un parser a righe.
+   link e un titolo. Riconosce sia la notazione svizzera (`1'299.90`, `CHF 249.-`, `Fr. 89.–`) sia quella
+   italiana (`1.299,90 €`); quando il negozio scrive solo `219.90` e mette `CHF` in un altro elemento, il
+   numero nudo viene accettato solo se il contesto conferma che è un prezzo. Sugli aggregatori cerca in
+   più il nome del negozio. Se il proxy restituisce testo/markdown invece di HTML, usa un parser a righe.
 3. **Pulizia** — pertinenza rispetto alla query (almeno il 55% delle parole nel titolo), deduplica
    per negozio+prezzo, rimozione degli outlier.
-4. **Analisi** — mediana calcolata sui venditori credibili (affidabilità ≥ 60), da lì derivano
-   risparmio percentuale, classificazione dell'affare e punteggio finale.
+4. **Normalizzazione** — ogni prezzo viene portato nella valuta di confronto e, se l'offerta è estera,
+   maggiorato della stima dell'IVA import: solo a quel punto i prezzi sono paragonabili.
+5. **Analisi** — mediana calcolata sui venditori credibili (affidabilità ≥ 60) e ricalcolata dopo aver
+   tolto gli outlier; da lì derivano risparmio percentuale, classificazione dell'affare e punteggio finale.
 
 Lo stato di ogni fonte è mostrato in tempo reale: se un sito blocca il proxy lo vedi scritto, e l'app
 propone comunque i link per aprire la ricerca a mano.
@@ -72,5 +81,10 @@ icons/                     icona cartellino + lente (SVG e PNG)
   risulta "bloccata" ed è normale.
 - I prezzi sono letti dalle pagine pubbliche al momento della ricerca, **possono non includere le
   spese di spedizione** e cambiano in continuazione.
+- La maggiorazione dell'8.1% è **solo l'IVA all'importazione**: non comprende le spese di sdoganamento
+  del corriere (spesso 10-20 CHF), eventuali dazi, né il fastidio di gestire una garanzia all'estero.
+- Gli indirizzi di ricerca dei negozi svizzeri non hanno potuto essere verificati dall'ambiente di
+  sviluppo, che ha la rete limitata: se una fonte risponde sempre "nessun prezzo leggibile", basta
+  correggere il suo URL in `SOURCES` (`assets/app.js`) — è una riga sola.
 - Un prezzo molto più basso della media può essere un vero errore di listino, ma anche un prodotto
   diverso, ricondizionato o un venditore poco serio. **Controlla sempre la pagina del negozio prima di comprare.**

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Trova Prezzo — il prezzo più basso, dal sito più affidabile</title>
-<meta name="description" content="Cerca un prodotto e trova il prezzo più basso sui siti più affidabili. Segnala errori di prezzo e offerte imperdibili.">
+<title>Trova Prezzo — il prezzo più basso in Svizzera</title>
+<meta name="description" content="Cerca un prodotto e trova il prezzo più basso sui negozi svizzeri più affidabili, con confronto in franchi delle offerte estere ed evidenza di errori di prezzo e offerte imperdibili.">
 <meta name="theme-color" content="#0f1024">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
@@ -23,7 +23,7 @@
     <img class="brand-logo" src="./icons/icon.svg" alt="" width="40" height="40">
     <div class="brand-text">
       <h1>Trova Prezzo</h1>
-      <p>Il prezzo più basso, dal venditore più affidabile</p>
+      <p>Il prezzo più basso in Svizzera, dal venditore più affidabile</p>
     </div>
   </div>
   <button id="themeBtn" class="icon-btn" type="button" title="Cambia tema" aria-label="Cambia tema">◐</button>
@@ -42,6 +42,12 @@
       </div>
     </form>
 
+    <div class="segmented" id="regionSeg" role="group" aria-label="Dove cercare">
+      <button type="button" data-region="CH">🇨🇭 Svizzera</button>
+      <button type="button" data-region="ALL">Tutto</button>
+      <button type="button" data-region="EU">🇮🇹 Italia · estero</button>
+    </div>
+
     <div class="chips" id="chips"></div>
 
     <details class="adv" id="adv">
@@ -55,9 +61,20 @@
           <span class="adv-label">Filtri</span>
           <label class="switch"><input type="checkbox" id="onlyTrusted"><span></span>Solo venditori affidabili (≥ 70)</label>
           <label class="switch"><input type="checkbox" id="hideOutliers" checked><span></span>Nascondi risultati non pertinenti (accessori, ricambi)</label>
-          <label class="field">Prezzo massimo (€)
+          <label class="field">Prezzo massimo (<span id="curLabel">CHF</span>)
             <input type="number" id="maxPrice" min="0" step="1" placeholder="nessun limite">
           </label>
+        </div>
+        <div class="adv-group">
+          <span class="adv-label">Confronto tra Svizzera ed estero</span>
+          <label class="field">Valuta di confronto
+            <select id="displayCur">
+              <option value="CHF">CHF — franchi</option>
+              <option value="EUR">EUR — euro</option>
+            </select>
+          </label>
+          <label class="switch"><input type="checkbox" id="importVat" checked><span></span>Aggiungi ai prezzi esteri la stima dell'IVA import (8.1%)</label>
+          <p class="muted" id="fxNote"></p>
         </div>
       </div>
     </details>
@@ -67,9 +84,10 @@
   <section class="panel" id="intro">
     <h2 class="section-title"><span class="dot"></span>Come funziona</h2>
     <ul class="intro-list">
-      <li><span class="intro-ico">🛒</span><span>Cerchi un prodotto e l'app interroga insieme <b>Trovaprezzi, idealo, eBay, Google Shopping e Amazon</b>.</span></li>
+      <li><span class="intro-ico">🛒</span><span>Cerchi un prodotto e l'app interroga insieme i negozi svizzeri — <b>Toppreise, digitec, Galaxus, Brack, Google Shopping CH</b> — e, se vuoi, anche <b>Italia ed estero</b>.</span></li>
       <li><span class="intro-ico">🛡️</span><span>Ogni venditore riceve un <b>punteggio di affidabilità</b>: il consiglio finale non è il prezzo più basso e basta, ma il più basso di cui ci si può fidare.</span></li>
       <li><span class="intro-ico">🎯</span><span>I prezzi molto sotto la media vengono isolati come <b>possibili errori di prezzo</b> oppure segnalati come <b>anomali da verificare</b> se il negozio è poco noto.</span></li>
+      <li><span class="intro-ico">🇨🇭</span><span>Le offerte in euro vengono <b>convertite in franchi</b> al cambio del giorno e, a scelta, maggiorate della <b>stima dell'IVA import dell'8.1%</b>: così il confronto con i negozi svizzeri è onesto.</span></li>
       <li><span class="intro-ico">🔔</span><span>Puoi salvare una ricerca con un <b>prezzo obiettivo</b> e ricontrollarla con un tocco.</span></li>
     </ul>
   </section>
@@ -133,9 +151,11 @@
 
   <p class="disclaimer">
     I prezzi vengono letti dalle pagine pubbliche dei negozi al momento della ricerca e possono cambiare
-    o non includere le spese di spedizione. Un prezzo molto più basso della media può essere un vero errore
-    di prezzo, ma anche un prodotto diverso, ricondizionato o un venditore poco serio: <strong>controlla
-    sempre la pagina del negozio prima di comprare.</strong>
+    o non includere le spese di spedizione. Sugli acquisti dall'estero la maggiorazione dell'8.1% è solo una
+    <strong>stima dell'IVA all'importazione</strong>: non comprende le spese di sdoganamento del corriere,
+    eventuali dazi o la garanzia gestita fuori dalla Svizzera. Un prezzo molto più basso della media può
+    essere un vero errore di listino, ma anche un prodotto diverso, ricondizionato o un venditore poco serio:
+    <strong>controlla sempre la pagina del negozio prima di comprare.</strong>
   </p>
 </main>
 

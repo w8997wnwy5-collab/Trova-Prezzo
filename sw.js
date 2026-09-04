@@ -1,5 +1,5 @@
 /* Trova Prezzo — service worker: guscio offline, mai cache dei prezzi */
-const CACHE = 'trovaprezzo-v1';
+const CACHE = 'trovaprezzo-v2';
 const SHELL = [
   './', './index.html', './assets/styles.css', './assets/app.js',
   './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png',

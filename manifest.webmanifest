@@ -1,19 +1,39 @@
 {
-  "name": "Trova Prezzo — prezzo più basso e affidabile",
+  "name": "Trova Prezzo — il prezzo più basso in Svizzera",
   "short_name": "Trova Prezzo",
-  "description": "Cerca un prodotto e trova il prezzo più basso sul venditore più affidabile, con segnalazione di errori di prezzo e offerte imperdibili.",
-  "lang": "it-IT",
+  "description": "Cerca un prodotto sui negozi svizzeri, confronta i prezzi in franchi (anche quelli esteri, convertiti e con stima dell'IVA import) e segnala errori di prezzo e offerte imperdibili.",
+  "lang": "it-CH",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0d0e1f",
   "theme_color": "#0f1024",
-  "categories": ["shopping", "utilities"],
+  "categories": [
+    "shopping",
+    "utilities"
+  ],
   "icons": [
-    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
   ]
 }
