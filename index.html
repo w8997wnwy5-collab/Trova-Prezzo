@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trova Prezzo — il prezzo più basso, dal sito più affidabile</title>
+<meta name="description" content="Cerca un prodotto e trova il prezzo più basso sui siti più affidabili. Segnala errori di prezzo e offerte imperdibili.">
+<meta name="theme-color" content="#0f1024">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trova Prezzo">
+<link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <img class="brand-logo" src="./icons/icon.svg" alt="" width="40" height="40">
+    <div class="brand-text">
+      <h1>Trova Prezzo</h1>
+      <p>Il prezzo più basso, dal venditore più affidabile</p>
+    </div>
+  </div>
+  <button id="themeBtn" class="icon-btn" type="button" title="Cambia tema" aria-label="Cambia tema">◐</button>
+</header>
+
+<main>
+  <!-- ============ RICERCA ============ -->
+  <section class="panel search-panel">
+    <form id="searchForm" autocomplete="off">
+      <div class="search-row">
+        <span class="search-ico" aria-hidden="true">🔎</span>
+        <input id="q" name="q" type="search" enterkeyhint="search"
+               placeholder="Es. AirPods Pro 2, Dyson V15, PS5 Slim…"
+               aria-label="Cosa stai cercando?" required>
+        <button id="searchBtn" class="btn-primary" type="submit">Cerca</button>
+      </div>
+    </form>
+
+    <div class="chips" id="chips"></div>
+
+    <details class="adv" id="adv">
+      <summary>Opzioni di ricerca</summary>
+      <div class="adv-body">
+        <div class="adv-group">
+          <span class="adv-label">Fonti da interrogare</span>
+          <div class="toggles" id="sourceToggles"></div>
+        </div>
+        <div class="adv-group">
+          <span class="adv-label">Filtri</span>
+          <label class="switch"><input type="checkbox" id="onlyTrusted"><span></span>Solo venditori affidabili (≥ 70)</label>
+          <label class="switch"><input type="checkbox" id="hideOutliers" checked><span></span>Nascondi risultati non pertinenti (accessori, ricambi)</label>
+          <label class="field">Prezzo massimo (€)
+            <input type="number" id="maxPrice" min="0" step="1" placeholder="nessun limite">
+          </label>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ INTRODUZIONE ============ -->
+  <section class="panel" id="intro">
+    <h2 class="section-title"><span class="dot"></span>Come funziona</h2>
+    <ul class="intro-list">
+      <li><span class="intro-ico">🛒</span><span>Cerchi un prodotto e l'app interroga insieme <b>Trovaprezzi, idealo, eBay, Google Shopping e Amazon</b>.</span></li>
+      <li><span class="intro-ico">🛡️</span><span>Ogni venditore riceve un <b>punteggio di affidabilità</b>: il consiglio finale non è il prezzo più basso e basta, ma il più basso di cui ci si può fidare.</span></li>
+      <li><span class="intro-ico">🎯</span><span>I prezzi molto sotto la media vengono isolati come <b>possibili errori di prezzo</b> oppure segnalati come <b>anomali da verificare</b> se il negozio è poco noto.</span></li>
+      <li><span class="intro-ico">🔔</span><span>Puoi salvare una ricerca con un <b>prezzo obiettivo</b> e ricontrollarla con un tocco.</span></li>
+    </ul>
+  </section>
+
+  <!-- ============ STATO FONTI ============ -->
+  <section class="status" id="status" hidden>
+    <div class="status-head">
+      <span id="statusText">Ricerca in corso…</span>
+      <span class="spinner" id="spinner"></span>
+    </div>
+    <div class="pills" id="sourcePills"></div>
+  </section>
+
+  <!-- ============ MIGLIOR SCELTA ============ -->
+  <section id="bestWrap" hidden>
+    <h2 class="section-title"><span class="dot dot-best"></span>Miglior scelta</h2>
+    <div id="best"></div>
+  </section>
+
+  <!-- ============ AFFARI ============ -->
+  <section id="dealsWrap" hidden>
+    <h2 class="section-title"><span class="dot dot-deal"></span>Errori di prezzo &amp; offerte imperdibili</h2>
+    <p class="section-sub" id="dealsSub"></p>
+    <div class="grid" id="deals"></div>
+  </section>
+
+  <!-- ============ TUTTI I RISULTATI ============ -->
+  <section id="resultsWrap" hidden>
+    <div class="section-title-row">
+      <h2 class="section-title"><span class="dot"></span>Tutti i risultati <span class="count" id="resCount"></span></h2>
+      <label class="sort">Ordina
+        <select id="sortBy">
+          <option value="score">Miglior compromesso</option>
+          <option value="price">Prezzo crescente</option>
+          <option value="trust">Affidabilità</option>
+        </select>
+      </label>
+    </div>
+    <div class="grid" id="results"></div>
+    <div id="excludedWrap" hidden>
+      <details class="excluded">
+        <summary><span id="excludedCount">0</span> (prezzo anomalo o scarsa pertinenza)</summary>
+        <div class="grid" id="excluded"></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============ FALLBACK ============ -->
+  <section class="panel" id="fallbackWrap" hidden>
+    <h2 class="section-title"><span class="dot dot-warn"></span>Apri la ricerca direttamente</h2>
+    <p class="muted" id="fallbackMsg"></p>
+    <div class="links" id="fallbackLinks"></div>
+  </section>
+
+  <!-- ============ AVVISI PREZZO ============ -->
+  <section class="panel" id="watchPanel">
+    <h2 class="section-title"><span class="dot dot-watch"></span>I miei avvisi prezzo</h2>
+    <p class="muted">Salva una ricerca con un prezzo obiettivo: quando la ripeti, ti avviso se qualcuno è sceso sotto la tua soglia.</p>
+    <div id="watchList" class="watchlist"></div>
+  </section>
+
+  <p class="disclaimer">
+    I prezzi vengono letti dalle pagine pubbliche dei negozi al momento della ricerca e possono cambiare
+    o non includere le spese di spedizione. Un prezzo molto più basso della media può essere un vero errore
+    di prezzo, ma anche un prodotto diverso, ricondizionato o un venditore poco serio: <strong>controlla
+    sempre la pagina del negozio prima di comprare.</strong>
+  </p>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- suggerimento iOS -->
+<div class="ios-hint" id="iosHint" hidden>
+  <span>Aggiungi Trova Prezzo alla schermata Home: <strong>Condividi</strong> → <strong>Aggiungi a Home</strong></span>
+  <button type="button" id="iosHintClose" aria-label="Chiudi">✕</button>
+</div>
+
+<script src="./assets/app.js"></script>
+</body>
+</html>

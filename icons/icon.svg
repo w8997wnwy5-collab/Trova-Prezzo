@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Trova Prezzo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6C5CE7"/><stop offset="1" stop-color="#C05CFF"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="22%" cy="12%" r="55%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".28"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="tag">
+      <rect x="200" y="184" width="536" height="536" rx="76" fill="#fff"/>
+      <circle cx="324" cy="308" r="52" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="1024" height="1024" rx="232" fill="url(#bg)"/>
+  <rect width="1024" height="1024" rx="232" fill="url(#glow)"/>
+  <g transform="rotate(45 468 452)">
+    <rect x="200" y="184" width="536" height="536" rx="76" fill="#fff" mask="url(#tag)"/>
+  </g>
+  <text x="476" y="452" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="250"
+        font-weight="700" fill="#482EA0" text-anchor="middle" dominant-baseline="central">€</text>
+  <circle cx="716" cy="690" r="168" fill="#fff" fill-opacity=".82"/>
+  <line x1="800" y1="774" x2="936" y2="910" stroke="#482EA0" stroke-width="96" stroke-linecap="round"/>
+  <circle cx="716" cy="690" r="131" fill="none" stroke="#482EA0" stroke-width="74"/>
+  <path d="M623 640a105 105 0 0 1 47-47" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="26" stroke-linecap="round"/>
+</svg>
